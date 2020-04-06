@@ -8,3 +8,13 @@ export const receiveDecks = (decks) => {
         decks
     }
 }
+
+export const addTitleToDeck = title => {
+    return {
+        type: ADD_DECK,
+        deck: {
+            title,
+            questions: []
+        }
+    }
+}
