@@ -8,6 +8,8 @@ import DeckDetails from './components/DeckDetails';
 import { createStore } from 'redux'
 import reducer from './reducers'
 import { Provider } from 'react-redux'
+import AddDeckCard from './components/AddDeckCard';
+import Quiz from './components/Quiz';
 
 const store = createStore(reducer)
 
@@ -22,6 +24,8 @@ export default function App() {
             <Stack.Screen name='Root' component={BottomNavigator} />
             <Stack.Screen name='NewDeck' component={NewDeck} />
             <Stack.Screen name='DeckDetails' component={DeckDetails} />
+            <Stack.Screen name='AddDeckCard' component={AddDeckCard} />
+            <Stack.Screen name='Quiz' component={Quiz} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

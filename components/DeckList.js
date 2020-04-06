@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import { getDecks } from '../utils/api'
 import { receiveDecks } from '../actions'
 import DeckCard from './DeckCard'
-import { ScrollView } from 'react-native-gesture-handler'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 export class DeckList extends Component {
 
@@ -16,13 +16,16 @@ export class DeckList extends Component {
     render() {
         const { decks } = this.props
         return (
-            <ScrollView>
-                <Text> { JSON.stringify(decks)} </Text>
+            <ScrollView style={{flex: 1}} contentContainerStyle={{justifyContent: 'center', 
+            marginTop: 20,
+            alignItems: 'center'}}>
                 {
                     Object.keys(decks).map(deckTitle => {
                         const deck = decks[deckTitle]
 
-                        return <DeckCard deck={deck}  />
+                        return <TouchableOpacity onPress={() => this.props.navigation.navigate('DeckDetails', { deck })}>
+                            <DeckCard deck={deck}  />
+                        </TouchableOpacity>
                     })
                 }
             </ScrollView>
