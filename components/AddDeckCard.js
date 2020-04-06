@@ -1,14 +1,106 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
-
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import Colors from '../constants/Colors'
+import { addCardToDeck } from '../utils/api'
+import { connect } from 'react-redux'
+import { addCardToReduxDeck } from '../actions'
 export class AddDeckCard extends Component {
+
+    state = {
+        question: '',
+        answer: '',
+        error: {}
+    }
+
+    handleInputChange = ( fieldName, value ) => this.setState({[fieldName]: value})
+
+    addCardToDeck = () => {
+        const error = {}
+        const { question, answer } = this.state
+        if (!question || question.trim().length === 0) {
+            error.question = 'The question field is required'
+        }
+        if (!question || question.trim().length === 0) {
+            error.question = 'The question field is required'
+        }
+        if (Object.keys(error).length > 0) {
+            return;
+        }
+        const { title } = this.props.route.params;
+        const { dispatch } = this.props
+        const card = {
+            question,
+            answer
+        }
+        addCardToDeck(title, card)
+        .then(() => dispatch(addCardToReduxDeck(title, card)))
+        .catch((err) => console.log('An error while adding card to deck'))
+    }
     render() {
+        const { question, answer } = this.state
         return (
-            <View>
-                <Text>Add Deck Card</Text>
+            <View style={styles.container}>
+                <View style={styles.formGroup}>
+                    <Text style={styles.label}>Question</Text>
+                    <TextInput
+                        onChangeText={text => this.handleInputChange('question', text)}
+                        value={question}
+                        style={styles.input}
+                    />
+                    <Text></Text>
+                </View>
+                <View style={styles.formGroup}>
+                    <Text style={styles.label}>Answer</Text>
+                    <TextInput
+                        onChangeText={text => this.handleInputChange('answer', text)}
+                        value={answer}
+                        style={styles.input}
+                    />
+                </View>
+                <TouchableOpacity onPress={this.addCardToDeck} style={[styles.btn, { backgroundColor: Colors.primary }]}>
+                        <Text style={{ color: Colors.white}}>Submit</Text>
+                </TouchableOpacity>
             </View>
         )
     }
 }
 
-export default AddDeckCard
+const styles = StyleSheet.create({
+    container: {
+        alignItems: 'center',
+        padding: 50,
+        paddingTop: 70
+    },
+    label: {
+        fontSize: 18
+    },  
+    input: {
+        borderWidth: 1,
+        borderColor: Colors.primary,
+        padding: 5,
+        width: 300, 
+        marginTop: 10 ,
+        borderRadius: 3,  
+    },
+    formGroup: {
+        marginTop: 15,
+        marginBottom: 15,
+    },
+    errorText: {
+        color: Colors.danger,
+        alignSelf: 'flex-start',
+        padding: 5
+    },  
+    btn: {
+        paddingTop: 15,
+        paddingBottom: 15,
+        paddingLeft: 25,
+        paddingRight: 25,
+        borderRadius: 4,
+        margin: 10,
+        width: 130,
+        alignItems: 'center'
+    },   
+})
+
+export default connect()(AddDeckCard)

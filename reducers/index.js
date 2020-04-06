@@ -1,4 +1,4 @@
-import { RECEIVE_DECKS, ADD_DECK } from "../actions";
+import { RECEIVE_DECKS, ADD_DECK, ADD_CARD_TO_DECK } from "../actions";
 
 
 export default function(state={}, action) {
@@ -12,6 +12,15 @@ export default function(state={}, action) {
             return {
                 ...state,
                 [action.deck.title]: action.deck
+            }
+        case ADD_CARD_TO_DECK:
+            const { title, card } = action.deck
+            return {
+                ...state,
+                [title]: {
+                    ...state[title],
+                    questions: state[title].questions.push(card)
+                }
             }
         default: 
         return state;

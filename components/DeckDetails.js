@@ -17,7 +17,7 @@ export class DeckDetails extends Component {
                 </View>
 
                 <View style={styles.actionBtn}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('AddDeckCard')} style={[styles.btn, { backgroundColor: Colors.primary }]}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('AddDeckCard', { title: deck.title})} style={[styles.btn, { backgroundColor: Colors.primary }]}>
                         <Text style={{color: Colors.white}}> Add Card </Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Quiz')} style={[styles.btn, { backgroundColor: Colors.danger }]}>
