@@ -5,13 +5,15 @@ import { createStackNavigator } from '@react-navigation/stack'
 import BottomNavigator from './navigation/BottomNavigator';
 import NewDeck from './components/NewDeck';
 import DeckDetails from './components/DeckDetails';
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import reducer from './reducers'
 import { Provider } from 'react-redux'
 import AddDeckCard from './components/AddDeckCard';
 import Quiz from './components/Quiz';
+import { composeWithDevTools } from 'remote-redux-devtools'
+import thunk from 'redux-thunk'
 
-const store = createStore(reducer)
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
 
 const Stack = createStackNavigator();
 

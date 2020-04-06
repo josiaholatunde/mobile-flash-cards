@@ -15,12 +15,11 @@ export default function(state={}, action) {
             }
         case ADD_CARD_TO_DECK:
             const { title, card } = action.deck
+            const updatedDeck = state[title]
+            updatedDeck.questions.push(card)
             return {
                 ...state,
-                [title]: {
-                    ...state[title],
-                    questions: state[title].questions.push(card)
-                }
+                [title]: updatedDeck 
             }
         default: 
         return state;

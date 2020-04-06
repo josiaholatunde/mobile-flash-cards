@@ -15,33 +15,44 @@ export class Quiz extends Component {
         const { questions } = this.props
         const { currentQuestion } = this.state
         if (response) {
-            this.setState(state => ({ currentQuestion: state.currentQuestion + 1 }))
+            this.setState(state => ({ correctQuestions: state.correctQuestions + 1 }))
         }
 
         if (currentQuestion === questions.length - 1) {
             this.setState({ finishQuiz: true })
         } else {
-            this.setState(state => ({ correctQuestion: state.correctQuestions + 1 }))
+            this.setState(state => ({ currentQuestion: state.currentQuestion + 1, }))
         }
     }
     toggleShowQuestion = () => this.setState(state => ({ showQuestion: !state.showQuestion }))
 
+    resetQuiz = () => {
+        this.setState({
+            currentQuestion: 0,
+            correctQuestions: 0,
+            showQuestion: true,
+            finishQuiz: false
+        })
+
+        //Reset Notification
+    }
+
     showResult = () => {
-        const { correctQuestion } = this.state
-        const { questions } = this.props;
+        const { correctQuestions } = this.state
+        const { questions, navigation } = this.props;
         return <View style={styles.center}>
             <View style={{ marginBottom: 30 }}>
                 <AntDesign name='checkcircle' size={55} style={{ color: Colors.gray, fontSize: 77 }} />
             </View>
             <Text style={{ fontSize: 22 }}>Total Questions Answered:  {questions.length} </Text>
-            <Text style={{ fontSize: 22 }}>Correct Answers:  {correctQuestion} </Text>
+            <Text style={{ fontSize: 22 }}>Correct Answers:  {correctQuestions} </Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                <TouchableOpacity style={[styles.btnMd, styles.row, { backgroundColor: Colors.primary }]}>
+                <TouchableOpacity style={[styles.btnMd, styles.row, { backgroundColor: Colors.primary }]} onPress={() => navigation.goBack()}>
                     <EvilIcons name='chevron-left' color={Colors.white} size={30} />
                     <Text style={{ color: Colors.white, }}> Go Back </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[styles.btnMd, styles.row, { backgroundColor: Colors.danger }]}>
+                <TouchableOpacity style={[styles.btnMd, styles.row, { backgroundColor: Colors.danger }]} onPress={this.resetQuiz}>
                     <EvilIcons name='chevron-left' color={Colors.white} size={30} />
                     <Text style={{ color: Colors.white }}> Reset </Text>
                 </TouchableOpacity>
@@ -62,18 +73,21 @@ export class Quiz extends Component {
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 {
                     showQuestion ?
-                        (<Text style={styles.questionTxt}> {currentCard && currentCard.question} </Text>) : (<Text> {currentCard && currentCard.question} </Text>)
+                        (<Text style={styles.questionTxt}> {currentCard && currentCard.question} </Text>) : (<Text style={styles.questionTxt}> {currentCard && currentCard.answer } </Text>)
                 }
-                <TouchableOpacity onPress={this.toggleShowQuestion}>
-                    <Text>
+                
+            </View>
+
+            <View style={styles.actionBtn}>
+                <TouchableOpacity onPress={this.toggleShowQuestion}  style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ color: 'red' }}>
                         {
-                            showQuestion ? 'See Question' : 'See Answer'
+                            showQuestion ? 'See Answer' : 'See Question'
                         }
                     </Text>
+                    <AntDesign name='arrowright' style={{fontSize: 20, marginLeft: 5}} size={30} />
                 </TouchableOpacity>
-            </View>
-            <View style={styles.actionBtn}>
-                <TouchableOpacity onPress={() => this.handleAnswer(true)} style={[styles.btn, { backgroundColor: Colors.primary }]}>
+                <TouchableOpacity onPress={() => this.handleAnswer(true)} style={[styles.btn, { backgroundColor: Colors.primary, marginTop: 50 }]}>
                     <Text style={{ color: Colors.white }}> Correct </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.handleAnswer(false)} style={[styles.btn, { backgroundColor: Colors.danger }]}>
@@ -89,8 +103,8 @@ export class Quiz extends Component {
 
         if (questions.length === 0) {
             return <View style={styles.center}>
-                <Entypo  name='emoji-sad' size={100} style={{ marginBottom: 20}}  />
-                <Text style={{ fontSize: 20}}>This deck has no question cards!</Text>
+                <Entypo name='emoji-sad' size={100} style={{ marginBottom: 20 }} />
+                <Text style={{ fontSize: 20 }}>This deck has no question cards!</Text>
             </View>
         }
         return (
@@ -128,7 +142,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     actionBtn: {
-        marginTop: 150,
+        marginTop: 190,
         alignItems: 'center'
     },
     center: {
