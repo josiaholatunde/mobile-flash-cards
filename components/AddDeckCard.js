@@ -21,23 +21,26 @@ export class AddDeckCard extends Component {
             error.question = 'The question field is required'
         }
         if (!question || question.trim().length === 0) {
-            error.question = 'The question field is required'
+            error.answer = 'The question field is required'
         }
         if (Object.keys(error).length > 0) {
+            this.setState({ error})
             return;
         }
         const { title } = this.props.route.params;
-        const { dispatch } = this.props
+        const { dispatch, navigation } = this.props
         const card = {
             question,
             answer
         }
         addCardToDeck(title, card)
-        .then(() => dispatch(addCardToReduxDeck(title, card)))
-        .catch((err) => console.log('An error while adding card to deck'))
+        .then(() => {
+            dispatch(addCardToReduxDeck(title, card))
+            navigation.navigate('DecksList')
+        }).catch((err) => console.log('An error while adding card to deck'))
     }
     render() {
-        const { question, answer } = this.state
+        const { question, answer, error } = this.state
         return (
             <View style={styles.container}>
                 <View style={styles.formGroup}>
@@ -47,7 +50,7 @@ export class AddDeckCard extends Component {
                         value={question}
                         style={styles.input}
                     />
-                    <Text></Text>
+                    <Text>  { error['question'] &&  error['question'] } </Text>
                 </View>
                 <View style={styles.formGroup}>
                     <Text style={styles.label}>Answer</Text>
@@ -56,6 +59,7 @@ export class AddDeckCard extends Component {
                         value={answer}
                         style={styles.input}
                     />
+                    <Text>  { error['answer'] &&  error['answer'] } </Text>
                 </View>
                 <TouchableOpacity onPress={this.addCardToDeck} style={[styles.btn, { backgroundColor: Colors.primary }]}>
                         <Text style={{ color: Colors.white}}>Submit</Text>
