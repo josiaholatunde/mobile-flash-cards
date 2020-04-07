@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import Colors from '../constants/Colors'
 import { addCardToDeck } from '../utils/api'
 import { connect } from 'react-redux'
 import { addCardToReduxDeck } from '../actions'
+import { Ionicons } from '@expo/vector-icons'
 export class AddDeckCard extends Component {
 
     state = {
@@ -12,7 +13,7 @@ export class AddDeckCard extends Component {
         error: {}
     }
 
-    handleInputChange = ( fieldName, value ) => this.setState({[fieldName]: value})
+    handleInputChange = (fieldName, value) => this.setState({ [fieldName]: value })
 
     addCardToDeck = () => {
         const error = {}
@@ -21,10 +22,11 @@ export class AddDeckCard extends Component {
             error.question = 'The question field is required'
         }
         if (!question || question.trim().length === 0) {
-            error.answer = 'The question field is required'
+            error.answer = 'The answer field is required'
         }
         if (Object.keys(error).length > 0) {
-            this.setState({ error})
+            this.setState({ error })
+            setTimeout(() => this.setState({ error: {} }), 4000)
             return;
         }
         const { title } = this.props.route.params;
@@ -34,10 +36,10 @@ export class AddDeckCard extends Component {
             answer
         }
         addCardToDeck(title, card)
-        .then(() => {
-            dispatch(addCardToReduxDeck(title, card))
-            navigation.navigate('DecksList')
-        }).catch((err) => console.log('An error while adding card to deck'))
+            .then(() => {
+                dispatch(addCardToReduxDeck(title, card))
+                navigation.navigate('DecksList')
+            }).catch((err) => console.log('An error while adding card to deck'))
     }
     render() {
         const { question, answer, error } = this.state
@@ -50,7 +52,7 @@ export class AddDeckCard extends Component {
                         value={question}
                         style={styles.input}
                     />
-                    <Text>  { error['question'] &&  error['question'] } </Text>
+                    <Text style={styles.errorText}>  {error['question'] && error['question']} </Text>
                 </View>
                 <View style={styles.formGroup}>
                     <Text style={styles.label}>Answer</Text>
@@ -59,10 +61,14 @@ export class AddDeckCard extends Component {
                         value={answer}
                         style={styles.input}
                     />
-                    <Text>  { error['answer'] &&  error['answer'] } </Text>
+                    <Text style={styles.errorText}>  {error['answer'] && error['answer']} </Text>
                 </View>
-                <TouchableOpacity onPress={this.addCardToDeck} style={[styles.btn, { backgroundColor: Colors.primary }]}>
-                        <Text style={{ color: Colors.white}}>Submit</Text>
+                <TouchableOpacity onPress={this.addCardToDeck} style={[styles.btn, { backgroundColor: Colors.primary, flexDirection: 'row' }]}>
+
+                    <Text style={{ color: Colors.white }}>Submit</Text>
+                    {
+                        (<Ionicons name={Platform.OS === 'ios' ? 'ios-arrow-dropright' : 'md-arrow-forward'} color={Colors.white} style={{ marginLeft: 12}} />)
+                    }
                 </TouchableOpacity>
             </View>
         )
@@ -77,15 +83,20 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 18
-    },  
+    },
     input: {
         borderWidth: 1,
         borderColor: Colors.primary,
         padding: 5,
         paddingLeft: 10,
-        width: 300, 
-        marginTop: 10 ,
-        borderRadius: 3,  
+        width: 300,
+        marginTop: 10,
+        borderRadius: 3,
+    },
+    errorText: {
+        color: Colors.danger,
+        alignSelf: 'flex-start',
+        padding: 5
     },
     formGroup: {
         marginTop: 15,
@@ -95,7 +106,7 @@ const styles = StyleSheet.create({
         color: Colors.danger,
         alignSelf: 'flex-start',
         padding: 5
-    },  
+    },
     btn: {
         paddingTop: 15,
         paddingBottom: 15,
@@ -105,7 +116,7 @@ const styles = StyleSheet.create({
         margin: 10,
         width: 130,
         alignItems: 'center'
-    },   
+    },
 })
 
 export default connect()(AddDeckCard)

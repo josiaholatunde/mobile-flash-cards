@@ -1,10 +1,11 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import TabBarIcon from '../components/TabBarIcon';
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
+import { MaterialIcons, FontAwesome, Entypo } from '@expo/vector-icons'
 import NewDeck from '../components/NewDeck';
 import DeckList from '../components/DeckList';
 import Colors from '../constants/Colors';
+import { Platform } from 'react-native'
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'DecksList';
@@ -36,7 +37,11 @@ const BottomNavigator = ({ route, navigation }) => {
                 component={NewDeck}
                 options={{
                     tabBarLabel: 'Add Deck',
-                    tabBarIcon: ({ focused }) => <FontAwesome focused={focused} name='plus-square' size={30} style={{ marginBottom: 0 }} color={Colors.tabIconDefault} />
+                    tabBarIcon: ({ focused }) =>  (
+                        Platform.OS === 'ios' ? (
+                            <Entypo focused={focused} name='squared-plus' size={30} style={{ marginBottom: 0 }} color={Colors.tabIconDefault} />
+                        )
+                    :(<FontAwesome focused={focused} name='plus-square' size={30} style={{ marginBottom: 0 }} color={Colors.tabIconDefault} />))
                 }}
             />
         </BottomTab.Navigator>

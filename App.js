@@ -33,10 +33,24 @@ export default function App() {
       <View style={styles.container}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name='Root' component={BottomNavigator} />
-            <Stack.Screen name='NewDeck' component={NewDeck} />
-            <Stack.Screen name='DeckDetails' component={DeckDetails} />
-            <Stack.Screen name='AddDeckCard' component={AddDeckCard} />
+            <Stack.Screen name='Root' component={BottomNavigator}
+          
+             />
+            <Stack.Screen name='NewDeck' component={NewDeck}
+            options={{
+              headerTitle: 'Create a New Deck'
+            }}
+            />
+            <Stack.Screen name='DeckDetails' component={DeckDetails}
+             options={{
+              headerTitle: 'Deck Details'
+            }}
+            />
+            <Stack.Screen name='AddDeckCard' component={AddDeckCard}
+             options={{
+              headerTitle: 'Add a card to a deck'
+            }}
+            />
             <Stack.Screen name='Quiz' component={Quiz} />
           </Stack.Navigator>
         </NavigationContainer>

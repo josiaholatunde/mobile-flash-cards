@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Colors from '../constants/Colors'
 import { deleteDeckFromRedux } from '../actions';
 import { deleteDeckFromDb } from '../utils/api'
+import TextButton from './TextButton';
 export class DeckDetails extends Component {
 
     deleteDeck = () => {
@@ -21,25 +22,23 @@ export class DeckDetails extends Component {
     render() {
         const { deck } = this.props;
         return (
+           deck && (
             <View style={{ flex: 1, alignItems: 'center', padding: 50}}>
-                <View style={styles.cardContent}>
-                    <Text style={styles.cardTitle}> {deck.title} </Text>
-                    <Text style={{ color: Colors.gray, fontSize: 18, marginTop: 10 }}> {deck.questions.length}  card{deck.questions.length === 1 ? '' : 's'} </Text>
-                </View>
-
-                <View style={styles.actionBtn}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('AddDeckCard', { title: deck.title})} style={[styles.btn, { backgroundColor: Colors.primary }]}>
-                        <Text style={{color: Colors.white}}> Add Card </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Quiz', { title: deck.title})} style={[styles.btn, { backgroundColor: Colors.danger }]}>
-                        <Text style={{color: Colors.white}}> Start Quiz </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() =>this.deleteDeck(deck.title)} style={{ color: Colors.primary, marginTop: 10}} >
-                        <Text style={{color: Colors.primary}}> Delete Deck </Text>
-                    </TouchableOpacity>
-                </View>
+            <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}> {deck.title} </Text>
+                <Text style={{ color: Colors.gray, fontSize: 18, marginTop: 10 }}> {deck.questions.length}  card{deck.questions.length === 1 ? '' : 's'} </Text>
             </View>
+
+            <View style={styles.actionBtn}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('AddDeckCard', { title: deck.title})} style={[styles.btn, { backgroundColor: Colors.primary }]}>
+                    <Text style={{color: Colors.white}}> Add Card </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Quiz', { title: deck.title})} style={[styles.btn, { backgroundColor: Colors.danger }]}>
+                    <Text style={{color: Colors.white}}> Start Quiz </Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+           )
         )
     }
 }

@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Platform } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import Colors from '../constants/Colors'
-import { AntDesign, EvilIcons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons'
+import { AntDesign, EvilIcons, Ionicons, Entypo } from '@expo/vector-icons'
 import setLocalNotification, { clearAllNotifications } from '../utils/helpers'
+import TextButton from './TextButton'
 export class Quiz extends Component {
     state = {
         currentQuestion: 0,
@@ -39,8 +40,8 @@ export class Quiz extends Component {
             finishQuiz: false
         })
         clearAllNotifications()
-        .then(setLocalNotification)
-       
+            .then(setLocalNotification)
+
     }
 
     showResult = () => {
@@ -79,20 +80,21 @@ export class Quiz extends Component {
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 {
                     showQuestion ?
-                        (<Text style={styles.questionTxt}> {currentCard && currentCard.question} </Text>) : (<Text style={styles.questionTxt}> {currentCard && currentCard.answer } </Text>)
+                        (<Text style={styles.questionTxt}> {currentCard && currentCard.question} </Text>) : (<Text style={styles.questionTxt}> {currentCard && currentCard.answer} </Text>)
                 }
-                
+
             </View>
 
-            <View style={styles.actionBtn}>
-                <TouchableOpacity onPress={this.toggleShowQuestion}  style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ color: 'red' }}>
+            <View style={[styles.actionBtn ]}>
+                <View style={styles.row}>
+                    <TextButton color={Colors.danger} onPress={this.toggleShowQuestion} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         {
                             showQuestion ? 'See Answer' : 'See Question'
                         }
-                    </Text>
-                    <AntDesign name='arrowright' style={{fontSize: 20, marginLeft: 5}} size={30} />
-                </TouchableOpacity>
+                    </TextButton>
+                    <AntDesign name='arrowright' style={{ fontSize: 20, marginLeft: 5 }} size={30} />
+
+                </View>
                 <TouchableOpacity onPress={() => this.handleAnswer(true)} style={[styles.btn, { backgroundColor: Colors.primary, marginTop: 50 }]}>
                     <Text style={{ color: Colors.white }}> Correct </Text>
                 </TouchableOpacity>
@@ -109,7 +111,12 @@ export class Quiz extends Component {
 
         if (questions.length === 0) {
             return <View style={styles.center}>
-                <Entypo name='emoji-sad' size={100} style={{ marginBottom: 20 }} />
+                {
+                    Platform.OS === 'ios' ? (
+                        <Ionicons name='ios-sad' size={100} style={{ marginBottom: 20 }} />
+                    ): (<Entypo name='emoji-sad' size={100} style={{ marginBottom: 20 }} />
+                    )
+                }
                 <Text style={{ fontSize: 20 }}>This deck has no question cards!</Text>
             </View>
         }
