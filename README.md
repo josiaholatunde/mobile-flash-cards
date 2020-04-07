@@ -14,7 +14,7 @@
 This is the third project for my Udacity Nanodegree program. This application is a mobile flash card application that helps users practice quiz exercises and receive scores as well as notifications to study using the app.It consists majorly of  7 pages. The app allows the user to create a deck and add cards to that deck. It also allows the user to take quiz exercises.
 
 ## Mode of usage
-On the main page, Click on the button to load the list of decks. Clicking on one of the decks should lead to viewing details of that deck. 
+The app was tested on a samsung android A70 phone via the expo app. On the main page, Click on the button to load the list of decks. Clicking on one of the decks should lead to viewing details of that deck. 
 
 ### Setting up the application
 
