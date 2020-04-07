@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -12,12 +12,22 @@ import AddDeckCard from './components/AddDeckCard';
 import Quiz from './components/Quiz';
 import { composeWithDevTools } from 'remote-redux-devtools'
 import thunk from 'redux-thunk'
+import setLocalNotification from './utils/helpers';
+
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
 
 const Stack = createStackNavigator();
 
+
+
 export default function App() {
+
+  useEffect(() => {
+    setLocalNotification()
+    //eslint-disable-next-line
+  }, [])
+  
   return (
     <Provider store={store}>
       <View style={styles.container}>

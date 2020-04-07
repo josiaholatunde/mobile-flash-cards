@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native'
 import dumpData from './db'
-import { MOBILE_FLASHCARD_DB_KEY } from './helpers'
+import { MOBILE_FLASHCARD_DB_KEY, MOBILE_FLASHCARD_NOTIFICATION_KEY } from './helpers'
 
 export const seedDbWithDumpData = (dumpData) => {
     return AsyncStorage.setItem(MOBILE_FLASHCARD_DB_KEY, JSON.stringify(dumpData))
@@ -38,5 +38,15 @@ export const addCardToDeck = (title, card) => {
     .then(decks => {
         decks[title].questions.push(card);
         AsyncStorage.mergeItem(MOBILE_FLASHCARD_DB_KEY, JSON.stringify(decks))
+    })
+}
+
+export const deleteDeckFromDb = (title) => {
+    return getDecks()
+    .then(decks => {
+         decks[title] = null
+         delete decks[title]
+
+         return AsyncStorage.mergeItem(MOBILE_FLASHCARD_DB_KEY, JSON.stringify(decks))
     })
 }

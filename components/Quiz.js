@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import Colors from '../constants/Colors'
 import { AntDesign, EvilIcons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons'
+import setLocalNotification, { clearAllNotifications } from '../utils/helpers'
 export class Quiz extends Component {
     state = {
         currentQuestion: 0,
@@ -20,9 +21,13 @@ export class Quiz extends Component {
 
         if (currentQuestion === questions.length - 1) {
             this.setState({ finishQuiz: true })
+            // Clear all notification
+            clearAllNotifications();
         } else {
             this.setState(state => ({ currentQuestion: state.currentQuestion + 1, }))
         }
+
+
     }
     toggleShowQuestion = () => this.setState(state => ({ showQuestion: !state.showQuestion }))
 
@@ -33,8 +38,9 @@ export class Quiz extends Component {
             showQuestion: true,
             finishQuiz: false
         })
-
-        //Reset Notification
+        clearAllNotifications()
+        .then(setLocalNotification)
+       
     }
 
     showResult = () => {

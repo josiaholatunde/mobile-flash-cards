@@ -23,7 +23,7 @@ export class DeckList extends Component {
                     Object.keys(decks).map(deckTitle => {
                         const deck = decks[deckTitle]
 
-                        return <TouchableOpacity key={deckTitle} onPress={() => this.props.navigation.navigate('DeckDetails', { deck })}>
+                        return <TouchableOpacity key={deckTitle} onPress={() => this.props.navigation.navigate('DeckDetails', { title: deckTitle })}>
                             <DeckCard deck={deck}  />
                         </TouchableOpacity>
                     })

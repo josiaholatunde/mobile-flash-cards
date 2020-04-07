@@ -4,11 +4,22 @@ import { connect } from 'react-redux'
 import { getDeck } from '../utils/api'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Colors from '../constants/Colors'
-
+import { deleteDeckFromRedux } from '../actions';
+import { deleteDeckFromDb } from '../utils/api'
 export class DeckDetails extends Component {
 
+    deleteDeck = () => {
+        const { dispatch, deck, navigation } = this.props
+        deleteDeckFromDb(deck.title)
+        .then(deck => {
+            dispatch(deleteDeckFromRedux(deck.title))
+            navigation.navigate('DecksList')
+            
+        }).catch(err => console.log('An error occurred while deleting deck'))
+    }
+
     render() {
-        const { deck } = this.props.route.params;
+        const { deck } = this.props;
         return (
             <View style={{ flex: 1, alignItems: 'center', padding: 50}}>
                 <View style={styles.cardContent}>
@@ -22,6 +33,10 @@ export class DeckDetails extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Quiz', { title: deck.title})} style={[styles.btn, { backgroundColor: Colors.danger }]}>
                         <Text style={{color: Colors.white}}> Start Quiz </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() =>this.deleteDeck(deck.title)} style={{ color: Colors.primary, marginTop: 10}} >
+                        <Text style={{color: Colors.primary}}> Delete Deck </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -48,9 +63,13 @@ const styles = StyleSheet.create({
         margin: 10
     },
     actionBtn: {
-        marginTop: 150
+        marginTop: 150,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 
-
-export default connect()(DeckDetails)
+const mapStateToProps = (decks, props) => ({
+    deck: decks[props.route.params.title]
+})
+export default connect(mapStateToProps)(DeckDetails)
