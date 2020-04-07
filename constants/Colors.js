@@ -13,6 +13,14 @@ export default {
   warningText: '#666804',
   noticeBackground: tintColor,
   noticeText: '#fff',
-  primary: '#0275d8',
+  primary: '#074981',
   danger: '#d9534f'
 };
+
+
+export const getRandomColors = () => ([
+  '#074981',
+  '#d9534f',
+  'purple',
+  '#5eba7d'
+])

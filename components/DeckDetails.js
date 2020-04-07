@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapStateToProps = (decks, props) => ({
+const mapStateToProps = ({ decks }, props) => ({
     deck: decks[props.route.params.title]
 })
 export default connect(mapStateToProps)(DeckDetails)

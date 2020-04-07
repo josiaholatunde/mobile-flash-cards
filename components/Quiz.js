@@ -92,7 +92,12 @@ export class Quiz extends Component {
                             showQuestion ? 'See Answer' : 'See Question'
                         }
                     </TextButton>
-                    <AntDesign name='arrowright' style={{ fontSize: 20, marginLeft: 5 }} size={30} />
+                    {
+                        Platform.OS === 'ios' ? (
+                            <Ionicons name='ios-arrow-round-forward' style={{ fontSize: 20, marginLeft: 5 }} size={30} />
+                        ): (<AntDesign name='arrowright' style={{ fontSize: 20, marginLeft: 5 }} size={30} />
+                        )
+                    }
 
                 </View>
                 <TouchableOpacity onPress={() => this.handleAnswer(true)} style={[styles.btn, { backgroundColor: Colors.primary, marginTop: 50 }]}>
@@ -170,7 +175,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapStateToProps = (decks, props) => ({
+const mapStateToProps = ({ decks }, props) => ({
     questions: decks[props.route.params.title].questions
 })
 export default connect(mapStateToProps)(Quiz)

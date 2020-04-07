@@ -2,6 +2,8 @@ export const RECEIVE_DECKS = 'RECEIVE_DECKS'
 export const ADD_DECK = 'ADD_DECK'
 export const ADD_CARD_TO_DECK = 'ADD_CARD_TO_DECK'
 export const DELETE_DECK = 'DELETE_DECK'
+export const SET_LOADING='SET_LOADING'
+
 
 export const receiveDecks = (decks) => {
     return {
@@ -36,3 +38,13 @@ export const deleteDeckFromRedux = title => {
         title
     }
 }
+
+export const showLoading = () => ({
+    type: SET_LOADING,
+    payload: true
+})
+
+export const hideLoading = () => ({
+    type: SET_LOADING,
+    payload: false
+})

@@ -20,7 +20,7 @@ const BottomNavigator = ({ route, navigation }) => {
         tabBarOptions={{
             activeTintColor: '#fff',
             inactiveTintColor: '#ccc',
-            tabStyle: { backgroundColor: '#0275d8', color: '#fff'}
+            tabStyle: { backgroundColor: Colors.primary, color: '#fff'}
           }}
         >
             <BottomTab.Screen

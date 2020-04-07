@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Colors from '../constants/Colors'
+import { getRandomColors } from '../constants/Colors'
+import _ from 'lodash'
 
+const colorsArray = getRandomColors()
 export class DeckCard extends Component {
     render() {
-        const { deck } = this.props
+        const { deck, index } = this.props
+        const indexOfColorToDisplay = index % colorsArray.length
         return (
-            <TouchableOpacity style={styles.card}>
+            <TouchableOpacity style={[styles.card, { backgroundColor: colorsArray[indexOfColorToDisplay] }]}>
                <Text style={styles.cardTitle}> { deck.title } </Text> 
-               <Text style={{ color: Colors.gray, fontSize: 18}}> { deck.questions.length }  card{ deck.questions.length === 1 ? '': 's' } </Text>
+               <Text style={{ color: Colors.white, fontSize: 18}}> { deck.questions.length }  card{ deck.questions.length === 1 ? '': 's' } </Text>
             </TouchableOpacity>
         )
     }
@@ -24,7 +28,6 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         borderRadius: 8,
         elevation: 5,
-        backgroundColor: Colors.white,
         justifyContent: 'center',
         alignItems: 'center',
         margin: 20
@@ -32,6 +35,7 @@ const styles = StyleSheet.create({
     cardTitle: {
         fontSize: 24,
         padding: 5,
+        color: Colors.white
     }
 })
 

@@ -3,8 +3,9 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Platform } from 'r
 import Colors from '../constants/Colors'
 import { addCardToDeck } from '../utils/api'
 import { connect } from 'react-redux'
-import { addCardToReduxDeck } from '../actions'
+import { addCardToReduxDeck, showLoading, hideLoading } from '../actions'
 import { Ionicons } from '@expo/vector-icons'
+import AppLoader from './AppLoader'
 export class AddDeckCard extends Component {
 
     state = {
@@ -35,16 +36,21 @@ export class AddDeckCard extends Component {
             question,
             answer
         }
-        addCardToDeck(title, card)
-            .then(() => {
-                dispatch(addCardToReduxDeck(title, card))
-                navigation.navigate('DecksList')
-            }).catch((err) => console.log('An error while adding card to deck'))
+        dispatch(showLoading())
+        setTimeout(() => {
+            return addCardToDeck(title, card)
+                .then(() => {
+                    dispatch(addCardToReduxDeck(title, card))
+                    navigation.navigate('DecksList')
+                }).catch((err) => console.log('An error while adding card to deck'))
+                .finally(() => dispatch(hideLoading()))
+        }, 2000)
     }
     render() {
         const { question, answer, error } = this.state
+        const { loading } = this.props
         return (
-            <View style={styles.container}>
+            loading ? (<AppLoader />) : (<View style={styles.container}>
                 <View style={styles.formGroup}>
                     <Text style={styles.label}>Question</Text>
                     <TextInput
@@ -67,10 +73,10 @@ export class AddDeckCard extends Component {
 
                     <Text style={{ color: Colors.white }}>Submit</Text>
                     {
-                        (<Ionicons name={Platform.OS === 'ios' ? 'ios-arrow-dropright' : 'md-arrow-forward'} color={Colors.white} style={{ marginLeft: 12}} />)
+                        (<Ionicons name={Platform.OS === 'ios' ? 'ios-arrow-dropright' : 'md-arrow-forward'} color={Colors.white} style={{ marginLeft: 12 }} />)
                     }
                 </TouchableOpacity>
-            </View>
+            </View>)
         )
     }
 }
@@ -119,4 +125,8 @@ const styles = StyleSheet.create({
     },
 })
 
-export default connect()(AddDeckCard)
+const mapStateToProps = ({ loading }) => ({
+    loading
+})
+
+export default connect(mapStateToProps)(AddDeckCard)
