@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "mobileFlashCards",
+    "sdkVersion": "36.0.0",
+    "name": "MobileFlashCards",
     "slug": "mobileFlashCards",
     "platforms": [
       "ios",
@@ -17,6 +18,9 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0
+    },
+    "notification": {
+      "icon": "./assets/icon.png"
     },
     "assetBundlePatterns": [
       "**/*"
